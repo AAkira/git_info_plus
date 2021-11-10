@@ -1,0 +1,22 @@
+PODS:
+  - Flutter (1.0.0)
+  - git_info_plus (0.0.1):
+    - Flutter
+
+DEPENDENCIES:
+  - Flutter (from `Flutter`)
+  - git_info_plus (from `.symlinks/plugins/git_info_plus/ios`)
+
+EXTERNAL SOURCES:
+  Flutter:
+    :path: Flutter
+  git_info_plus:
+    :path: ".symlinks/plugins/git_info_plus/ios"
+
+SPEC CHECKSUMS:
+  Flutter: 50d75fe2f02b26cc09d224853bb45737f8b3214a
+  git_info_plus: 1ad0bfcaeba9b6cc87ffe2fa92c73b8924f91f7d
+
+PODFILE CHECKSUM: aafe91acc616949ddb318b77800a7f51bffa2a4c
+
+COCOAPODS: 1.10.2
