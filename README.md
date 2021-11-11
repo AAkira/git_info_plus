@@ -31,6 +31,7 @@ In order to use this library on IOS, you have to do some settings.
 #### 1. Add values in your info.plist
 
 |Key|Type|Value|
+|:-:|:-:|:-:|
 |GitBranchName|String|undefined|
 |GitCommitDate|String|undefined|
 |GitCommitHash|String|undefined|
@@ -40,16 +41,16 @@ In order to use this library on IOS, you have to do some settings.
 You can also copy and paste these lines.
 
 ```
-	<key>GitBranchName</key>
-	<string>undefined</string>
-	<key>GitCommitDate</key>
-	<string>undefined</string>
-	<key>GitCommitHash</key>
-	<string>undefined</string>
-	<key>GitCommitHashShort</key>
-	<string>undefined</string>
-	<key>GitCommitMessage</key>
-	<string>undefined</string>
+<key>GitBranchName</key>
+<string>undefined</string>
+<key>GitCommitDate</key>
+<string>undefined</string>
+<key>GitCommitHash</key>
+<string>undefined</string>
+<key>GitCommitHashShort</key>
+<string>undefined</string>
+<key>GitCommitMessage</key>
+<string>undefined</string>
 ```
 
 ![setup-ios-1][setup-ios-1]
@@ -61,7 +62,7 @@ Change to YES
 
 ![setup-ios-2][setup-ios-2]
 
-#### 3. Add Run Script
+#### 3-A. Add Run Script
 
 `BuildPhase >`
 
@@ -86,13 +87,13 @@ $plistBuddy -c "Set :GitCommitMessage $commitMessage" $infoPlistFile
 
 ![setup-ios-3][setup-ios-3]
 
-#### 4. Add Input Files.
+#### 3-B. Add Input Files.
 
 `${TEMP_DIR}/Preprocessed-Info.plist`
 
 
-[screenshot-android]: /arts/screenshot-android.png
-[screenshot-ios]: /arts/screenshot-ios.png
-[setup-ios-1]: /arts/setup-ios-1.jpg
-[setup-ios-2]: /arts/setup-ios-2.jpg
-[setup-ios-3]: /arts/setup-ios-3.jpg
+[screenshot-android]: https://raw.githubusercontent.com/AAkira/git_info_plus/master/arts/screenshot-android.png
+[screenshot-ios]: https://raw.githubusercontent.com/AAkira/git_info_plus/master/arts/screenshot-ios.png
+[setup-ios-1]: https://raw.githubusercontent.com/AAkira/git_info_plus/master/arts/setup-ios-1.jpg
+[setup-ios-2]: https://raw.githubusercontent.com/AAkira/git_info_plus/master/arts/setup-ios-2.jpg
+[setup-ios-3]: https://raw.githubusercontent.com/AAkira/git_info_plus/master/arts/setup-ios-3.jpg
