@@ -9,9 +9,9 @@ Pod::Spec.new do |s|
   s.description      = <<-DESC
 Get git information from within the Flutter application
                        DESC
-  s.homepage         = 'http://example.com'
+  s.homepage         = 'http://github.com/aakira/git_info_plus'
   s.license          = { :file => '../LICENSE' }
-  s.author           = { 'Your Company' => 'email@example.com' }
+  s.author           = { 'AAkira' => 'developer.a.akira@gmail.com' }
   s.source           = { :path => '.' }
   s.source_files = 'Classes/**/*'
   s.dependency 'Flutter'
