@@ -1,3 +1,12 @@
+## 0.0.3
+
+* Fix hash short command in iOS.
+* Modify git branch name command.
+
+## 0.0.2
+
+Fix gradle working directory in Android module.
+
 ## 0.0.1
 
-* TODO: Describe initial release.
+Release git_info_plus 0.0.1🎉
