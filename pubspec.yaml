@@ -1,6 +1,6 @@
 name: git_info_plus
 description: Get git information from within the Flutter application
-version: 0.0.2
+version: 0.0.3
 homepage: https://github.com/aakira/git_info_plus
 
 environment:

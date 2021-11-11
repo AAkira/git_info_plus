@@ -72,10 +72,10 @@ Add new Run Script and paste these lines.
 plistBuddy="/usr/libexec/PlistBuddy"
 infoPlistFile="${TEMP_DIR}/Preprocessed-Info.plist"
 
-branchName=$(git rev-parse --abbrev-ref HEAD)
+branchName=$(git branch --show-current)
 commitDate=$(git --no-pager log -1 --format="%ai")
-commitHash=$(git rev-parse --short HEAD)
-commitHashShort=$(git rev-parse HEAD)
+commitHash=$(git rev-parse HEAD)
+commitHashShort=$(git rev-parse --short HEAD)
 commitMessage=$(git log -1 --pretty=%s)
 
 $plistBuddy -c "Set :GitBranchName $branchName" $infoPlistFile
