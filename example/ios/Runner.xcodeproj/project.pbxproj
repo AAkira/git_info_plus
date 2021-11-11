@@ -246,7 +246,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "plistBuddy=\"/usr/libexec/PlistBuddy\"\ninfoPlistFile=\"${TEMP_DIR}/Preprocessed-Info.plist\"\n\nbranchName=$(git rev-parse --abbrev-ref HEAD)\ncommitDate=$(git --no-pager log -1 --format=\"%ai\")\ncommitHash=$(git rev-parse --short HEAD)\ncommitHashShort=$(git rev-parse HEAD)\ncommitMessage=$(git log -1 --pretty=%s)\n\n$plistBuddy -c \"Set :GitBranchName $branchName\" $infoPlistFile\n$plistBuddy -c \"Set :GitCommitDate $commitDate\" $infoPlistFile\n$plistBuddy -c \"Set :GitCommitHash $commitHash\" $infoPlistFile\n$plistBuddy -c \"Set :GitCommitHashShort $commitHashShort\" $infoPlistFile\n$plistBuddy -c \"Set :GitCommitMessage $commitMessage\" $infoPlistFile\n\n";
+			shellScript = "plistBuddy=\"/usr/libexec/PlistBuddy\"\ninfoPlistFile=\"${TEMP_DIR}/Preprocessed-Info.plist\"\n\nbranchName=$(git rev-parse --abbrev-ref HEAD)\ncommitDate=$(git --no-pager log -1 --format=\"%ai\")\ncommitHash=$(git rev-parse HEAD)\ncommitHashShort=$(git rev-parse --short HEAD)\ncommitMessage=$(git log -1 --pretty=%s)\n\n$plistBuddy -c \"Set :GitBranchName $branchName\" $infoPlistFile\n$plistBuddy -c \"Set :GitCommitDate $commitDate\" $infoPlistFile\n$plistBuddy -c \"Set :GitCommitHash $commitHash\" $infoPlistFile\n$plistBuddy -c \"Set :GitCommitHashShort $commitHashShort\" $infoPlistFile\n$plistBuddy -c \"Set :GitCommitMessage $commitMessage\" $infoPlistFile\n\n";
 		};
 		5283B31615F1D88DF97A88F0 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -282,7 +282,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "/bin/sh \"$FLUTTER_ROOT/packages/flutter_tools/bin/xcode_backend.sh\" build";
+			shellScript = "/bin/sh \"$FLUTTER_ROOT/packages/flutter_tools/bin/xcode_backend.sh\" build\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
