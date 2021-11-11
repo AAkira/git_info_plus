@@ -79,6 +79,7 @@ def execCommand(command, returnValue) {
     try {
         def stdout = new ByteArrayOutputStream()
         exec {
+            workingDir buildDir.path
             commandLine command
             standardOutput = stdout
         }
