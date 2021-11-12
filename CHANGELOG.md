@@ -1,3 +1,7 @@
+## 0.0.4
+
+* Read environment valus if git command is null in Android.
+
 ## 0.0.3
 
 * Fix hash short command in iOS.

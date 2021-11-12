@@ -24,6 +24,10 @@ final String lastCommitMessage = await GitInfo.lastCommitMessage;
 
 You do not need to set this up.
 
+#### Optional
+
+* Read environment valus if git command is null
+
 ### iOS
 
 In order to use this library on IOS, you have to do some settings.

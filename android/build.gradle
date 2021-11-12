@@ -55,24 +55,49 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
 
-def getHash() {
-    return execCommand(['git', 'rev-parse', 'HEAD'], null)
-}
-
-def getHashShort() {
-    return execCommand(['git', 'rev-parse', '--short', 'HEAD'], null)
-}
-
-def getCommitMessage() {
-    return execCommand(['git', 'log', '-1', '--pretty=%s'], null)
+def getBranchName() {
+    def value = execCommand(['git', 'branch', '--show-current'], null)
+    if (value == null) {
+        return System.getenv("GIT_BRANCH_NAME")
+    } else {
+        return value
+    }
 }
 
 def getLastCommitDate() {
-    return execCommand(['git', '--no-pager', 'log', '-1', '--format="%ai"'], null)
+    def value = execCommand(['git', '--no-pager', 'log', '-1', '--format="%ai"'], null)
+    if (value == null) {
+        return System.getenv("GIT_LAST_COMMIT_DATE")
+    } else {
+        return value
+    }
 }
 
-def getBranchName() {
-    return execCommand(['git', 'branch', '--show-current'], null)
+def getHash() {
+    def value = execCommand(['git', 'rev-parse', 'HEAD'], null)
+    if (value == null) {
+        return System.getenv("GIT_LAST_COMMIT_HASH")
+    } else {
+        return value
+    }
+}
+
+def getHashShort() {
+    def value = execCommand(['git', 'rev-parse', '--short', 'HEAD'], null)
+    if (value == null) {
+        return System.getenv("GIT_LAST_COMMIT_HASH_SHORT")
+    } else {
+        return value
+    }
+}
+
+def getCommitMessage() {
+    def value = execCommand(['git', 'log', '-1', '--pretty=%s'], null)
+    if (value == null) {
+        return System.getenv("GIT_LAST_COMMIT_MESSAGE")
+    } else {
+        return value
+    }
 }
 
 def execCommand(command, returnValue) {
