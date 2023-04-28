@@ -1,3 +1,11 @@
+## 0.0.5
+
+* Update libraries.
+  - Gradle
+  - Kotlin
+  - Gradle plugin
+  - JDK version
+ 
 ## 0.0.4
 
 * Read environment valus if git command is null in Android.

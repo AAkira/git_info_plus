@@ -25,16 +25,19 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
-android {
-    compileSdkVersion 30
-
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+kotlin {
+    jvmToolchain {
+        languageVersion = JavaLanguageVersion.of(18)
     }
+}
 
-    kotlinOptions {
-        jvmTarget = '1.8'
+android {
+    compileSdkVersion 33
+
+    namespace "io.github.aakira.git_info_plus_example"
+
+    buildFeatures {
+        buildConfig = true
     }
 
     sourceSets {
@@ -42,7 +45,6 @@ android {
     }
 
     defaultConfig {
-        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId "io.github.aakira.git_info_plus_example"
         minSdkVersion 16
         targetSdkVersion 30
@@ -64,5 +66,4 @@ flutter {
 }
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
