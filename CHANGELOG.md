@@ -1,3 +1,8 @@
+## 0.0.6
+
+* Update flutter version.
+  - 3.19.4
+
 ## 0.0.5
 
 * Update libraries.
