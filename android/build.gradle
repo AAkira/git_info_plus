@@ -14,7 +14,7 @@ buildscript {
     }
 }
 
-rootProject.allprojects {
+allprojects {
     repositories {
         google()
         mavenCentral()
@@ -24,24 +24,24 @@ rootProject.allprojects {
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 
-kotlin {
-    jvmToolchain {
-        languageVersion = JavaLanguageVersion.of(18)
-    }
-}
-
 android {
-    compileSdkVersion 33
+    if (project.android.hasProperty("namespace")) {
+        namespace "io.github.aakira.git_info_plus"
+    }
+
+    compileSdkVersion 34
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_18
-        targetCompatibility JavaVersion.VERSION_18
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
-
-    namespace "io.github.aakira.git_info_plus"
 
     buildFeatures {
         buildConfig = true
+    }
+
+    kotlinOptions {
+        jvmTarget = '1.8'
     }
 
     sourceSets {
@@ -57,9 +57,9 @@ android {
         buildConfigField "String", "GIT_LAST_COMMIT_HASH_SHORT", "\"${getHashShort()}\""
         buildConfigField "String", "GIT_LAST_COMMIT_MESSAGE", "\"${getCommitMessage()}\""
     }
-}
 
-dependencies {
+    dependencies {
+    }
 }
 
 def getBranchName() {
