@@ -1,16 +1,16 @@
 import Flutter
 import UIKit
 
-public class SwiftGitInfoPlusPlugin: NSObject, FlutterPlugin {
+public class GitInfoPlusPlugin: NSObject, FlutterPlugin {
   public static func register(with registrar: FlutterPluginRegistrar) {
     let channel = FlutterMethodChannel(name: "git_info_plus", binaryMessenger: registrar.messenger())
-    let instance = SwiftGitInfoPlusPlugin()
+    let instance = GitInfoPlusPlugin()
     registrar.addMethodCallDelegate(instance, channel: channel)
   }
-    
+
   public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
     let info = Bundle.main.infoDictionary!
-    
+
     if call.method == "getBranchName" {
       result("\(info["GitBranchName"]!)")
     } else if call.method == "getLastCommitDate" {

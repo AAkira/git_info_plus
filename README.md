@@ -11,11 +11,11 @@ Get git information from within the Flutter application.
 ### Dart
 
 ```dart
-final String branchName = await GitInfo.branchName;
-final DateTime lastCommitDate = await GitInfo.lastCommitDate;
-final String lastCommitHash = await GitInfo.lastCommitHash;
-final String lastCommitHashShort = await GitInfo.lastCommitHashShort;
-final String lastCommitMessage = await GitInfo.lastCommitMessage;
+final String? branchName = await GitInfo.branchName;
+final DateTime? lastCommitDate = await GitInfo.lastCommitDate;
+final String? lastCommitHash = await GitInfo.lastCommitHash;
+final String? lastCommitHashShort = await GitInfo.lastCommitHashShort;
+final String? lastCommitMessage = await GitInfo.lastCommitMessage;
 ```
 
 ## Setup
@@ -29,6 +29,9 @@ You do not need to set this up.
 * Read environment valus if git command is null
 
 ### iOS
+
+This plugin supports both Swift Package Manager and CocoaPods.
+You do not need to change anything for either of them.
 
 In order to use this library on IOS, you have to do some settings.
 
