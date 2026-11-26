@@ -48,11 +48,11 @@ android {
     defaultConfig {
         minSdk = 24
 
-        buildConfigField("String", "GIT_BRANCH_NAME", "\"${getBranchName()}\"")
-        buildConfigField("String", "GIT_LAST_COMMIT_DATE", "${getLastCommitDate()}")
-        buildConfigField("String", "GIT_LAST_COMMIT_HASH", "\"${getHash()}\"")
-        buildConfigField("String", "GIT_LAST_COMMIT_HASH_SHORT", "\"${getHashShort()}\"")
-        buildConfigField("String", "GIT_LAST_COMMIT_MESSAGE", "\"${getCommitMessage()}\"")
+        buildConfigField("String", "GIT_BRANCH_NAME", toJavaLiteral(getBranchName()))
+        buildConfigField("String", "GIT_LAST_COMMIT_DATE", toJavaLiteral(getLastCommitDate()))
+        buildConfigField("String", "GIT_LAST_COMMIT_HASH", toJavaLiteral(getHash()))
+        buildConfigField("String", "GIT_LAST_COMMIT_HASH_SHORT", toJavaLiteral(getHashShort()))
+        buildConfigField("String", "GIT_LAST_COMMIT_MESSAGE", toJavaLiteral(getCommitMessage()))
     }
 }
 
@@ -63,23 +63,28 @@ kotlin {
 }
 
 fun getBranchName(): String? =
-    execCommand(listOf("git", "branch", "--show-current")) ?: System.getenv("GIT_BRANCH_NAME")
+    execCommand(listOf("git", "branch", "--show-current")) ?: envValue("GIT_BRANCH_NAME")
 
-// Git emits the double quotes itself because the value is embedded in BuildConfig as a raw Java literal.
+// Versions before 0.1.0 embedded the env value as is, so users had to pass it quoted.
 fun getLastCommitDate(): String? =
-    execCommand(listOf("git", "--no-pager", "log", "-1", "--format=\"%ai\""))
-        ?: System.getenv("GIT_LAST_COMMIT_DATE")
+    execCommand(listOf("git", "--no-pager", "log", "-1", "--format=%ai"))
+        ?: envValue("GIT_LAST_COMMIT_DATE")
+            ?.removeSurrounding("\"")
+            ?.trim()
+            ?.takeIf { it.isNotBlank() }
 
 fun getHash(): String? =
-    execCommand(listOf("git", "rev-parse", "HEAD")) ?: System.getenv("GIT_LAST_COMMIT_HASH")
+    execCommand(listOf("git", "rev-parse", "HEAD")) ?: envValue("GIT_LAST_COMMIT_HASH")
 
 fun getHashShort(): String? =
     execCommand(listOf("git", "rev-parse", "--short", "HEAD"))
-        ?: System.getenv("GIT_LAST_COMMIT_HASH_SHORT")
+        ?: envValue("GIT_LAST_COMMIT_HASH_SHORT")
 
 fun getCommitMessage(): String? =
     execCommand(listOf("git", "log", "-1", "--pretty=%s"))
-        ?: System.getenv("GIT_LAST_COMMIT_MESSAGE")
+        ?: envValue("GIT_LAST_COMMIT_MESSAGE")
+
+fun envValue(name: String): String? = System.getenv(name)?.trim()?.takeIf { it.isNotEmpty() }
 
 // projectDir is not used because a pub cache copy of this plugin is not inside the app's repository.
 // rootProject.projectDir is the app's android directory when this plugin is built as a dependency.
@@ -90,7 +95,31 @@ fun execCommand(command: List<String>): String? =
             commandLine(command)
             isIgnoreExitValue = true
         }
-        if (output.result.get().exitValue == 0) output.standardOutput.asText.get().trim() else null
+        if (output.result.get().exitValue == 0) {
+            output.standardOutput.asText.get().trim().takeIf { it.isNotEmpty() }
+        } else {
+            null
+        }
     } catch (e: Exception) {
         null
     }
+
+// Control characters are written as octal escapes because javac translates \uXXXX before lexing,
+// so \u000a would end the string literal.
+fun toJavaLiteral(value: String?): String {
+    if (value == null) return "null"
+    val escaped = buildString {
+        for (c in value) {
+            when {
+                c == '\\' -> append("\\\\")
+                c == '"' -> append("\\\"")
+                c == '\n' -> append("\\n")
+                c == '\r' -> append("\\r")
+                c == '\t' -> append("\\t")
+                c < ' ' -> append("\\%03o".format(c.code))
+                else -> append(c)
+            }
+        }
+    }
+    return "\"$escaped\""
+}

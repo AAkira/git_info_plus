@@ -7,7 +7,7 @@ import UIKit
 
 struct RunnerTests {
 
-  @Test func getBranchNameReturnsInfoPlistValue() async {
+  @Test func getBranchNameReturnsInfoPlistValueOrNil() async {
     let plugin = GitInfoPlusPlugin()
     let call = FlutterMethodCall(methodName: "getBranchName", arguments: nil)
 
@@ -15,7 +15,8 @@ struct RunnerTests {
       plugin.handle(call) { continuation.resume(returning: $0) }
     }
 
-    #expect(result as? String == "\(Bundle.main.infoDictionary!["GitBranchName"]!)")
+    let plistValue = Bundle.main.infoDictionary?["GitBranchName"] as? String
+    #expect(result as? String == (plistValue?.isEmpty == false ? plistValue : nil))
   }
 
   @Test func unknownMethodReturnsError() async {

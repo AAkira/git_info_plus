@@ -26,7 +26,19 @@ You do not need to set this up.
 
 #### Optional
 
-* Read environment valus if git command is null
+If the git command fails or returns an empty value (e.g. detached HEAD on CI), the plugin reads these environment variables instead.
+If neither is available, the value is `null` in Dart.
+
+|Environment variable|Example|
+|:-:|:-:|
+|GIT_BRANCH_NAME|main|
+|GIT_LAST_COMMIT_DATE|2024-01-01 12:00:00 +0900|
+|GIT_LAST_COMMIT_HASH|ff4aa27c2d8e0a1b5f3c9d7e6a4b2c1d0e9f8a7b|
+|GIT_LAST_COMMIT_HASH_SHORT|ff4aa27|
+|GIT_LAST_COMMIT_MESSAGE|Initial commit.|
+
+The date uses the same format as `git log --format=%ai`.
+Quotes and backslashes in the values are escaped automatically.
 
 ### iOS
 
@@ -76,23 +88,31 @@ Change to YES
 Add new Run Script and paste these lines.
 
 ```bash
-plistBuddy="/usr/libexec/PlistBuddy"
 infoPlistFile="${TEMP_DIR}/Preprocessed-Info.plist"
 
 branchName=$(git branch --show-current)
-commitDate=$(git --no-pager log -1 --format="%ai")
+commitDate=$(git --no-pager log -1 --format=%ai)
 commitHash=$(git rev-parse HEAD)
 commitHashShort=$(git rev-parse --short HEAD)
 commitMessage=$(git log -1 --pretty=%s)
 
-$plistBuddy -c "Set :GitBranchName $branchName" $infoPlistFile
-$plistBuddy -c "Set :GitCommitDate $commitDate" $infoPlistFile
-$plistBuddy -c "Set :GitCommitHash $commitHash" $infoPlistFile
-$plistBuddy -c "Set :GitCommitHashShort $commitHashShort" $infoPlistFile
-$plistBuddy -c "Set :GitCommitMessage $commitMessage" $infoPlistFile
+# Xcode expands $VAR in Info.plist values after this script, so "$" has to be written as "$$".
+# LC_ALL=C keeps sed from rejecting invalid UTF-8 and emptying the value.
+setPlistString() {
+  plutil -replace "$1" -string "$(printf '%s' "$2" | LC_ALL=C sed 's/\$/$$/g')" "$infoPlistFile"
+}
+
+setPlistString GitBranchName "$branchName"
+setPlistString GitCommitDate "$commitDate"
+setPlistString GitCommitHash "$commitHash"
+setPlistString GitCommitHashShort "$commitHashShort"
+setPlistString GitCommitMessage "$commitMessage"
 ```
 
 ![setup-ios-3][setup-ios-3]
+
+`BuildSettings > User Script Sandboxing` (`ENABLE_USER_SCRIPT_SANDBOXING`) must be NO.
+The sandbox blocks the script from accessing the git repository and the plist.
 
 #### 3-B. Add Input Files.
 

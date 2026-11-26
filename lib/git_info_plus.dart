@@ -9,7 +9,9 @@ class GitInfo {
       _channel.invokeMethod('getBranchName');
 
   static Future<DateTime?> get lastCommitDate async {
-    final String dateString = await _channel.invokeMethod('getLastCommitDate');
+    final String? dateString =
+        await _channel.invokeMethod<String>('getLastCommitDate');
+    if (dateString == null) return null;
 
     try {
       return DateTime.parse(dateString).toLocal();

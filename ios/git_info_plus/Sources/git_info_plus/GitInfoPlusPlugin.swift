@@ -8,21 +8,21 @@ public class GitInfoPlusPlugin: NSObject, FlutterPlugin {
     registrar.addMethodCallDelegate(instance, channel: channel)
   }
 
-  public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
-    let info = Bundle.main.infoDictionary!
+  private static let infoKeys = [
+    "getBranchName": "GitBranchName",
+    "getLastCommitDate": "GitCommitDate",
+    "getLastCommitHash": "GitCommitHash",
+    "getLastCommitHashShort": "GitCommitHashShort",
+    "getLastCommitMessage": "GitCommitMessage",
+  ]
 
-    if call.method == "getBranchName" {
-      result("\(info["GitBranchName"]!)")
-    } else if call.method == "getLastCommitDate" {
-      result("\(info["GitCommitDate"]!)")
-    } else if call.method == "getLastCommitHash" {
-      result("\(info["GitCommitHash"]!)")
-    } else if call.method == "getLastCommitHashShort" {
-      result("\(info["GitCommitHashShort"]!)")
-    } else if call.method == "getLastCommitMessage" {
-      result("\(info["GitCommitMessage"]!)")
-    } else {
-      result(FlutterError.init(code: "NotImplemntedError", message: "Method does not exist.", details: nil));
+  public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
+    guard let key = Self.infoKeys[call.method] else {
+      result(FlutterError.init(code: "NotImplemntedError", message: "Method does not exist.", details: nil))
+      return
     }
+
+    let value = Bundle.main.infoDictionary?[key].map { "\($0)" }
+    result(value?.isEmpty == false ? value : nil)
   }
 }
