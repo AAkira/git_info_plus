@@ -8,7 +8,8 @@ void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
   setUp(() {
-    channel.setMockMethodCallHandler((MethodCall methodCall) async {
+    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+        .setMockMethodCallHandler(channel, (MethodCall methodCall) async {
       if (methodCall.method == 'getBranchName') {
         return 'main';
       } else if (methodCall.method == 'getLastCommitDate') {
@@ -26,7 +27,8 @@ void main() {
   });
 
   tearDown(() {
-    channel.setMockMethodCallHandler(null);
+    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+        .setMockMethodCallHandler(channel, null);
   });
 
   test('branchName', () async {
@@ -34,11 +36,17 @@ void main() {
   });
 
   test('getLastCommitDate', () async {
-    expect(await GitInfo.lastCommitDate, DateTime(2021, 01, 01, 18));
+    expect(
+      await GitInfo.lastCommitDate,
+      DateTime.utc(2021, 1, 1, 9).toLocal(),
+    );
   });
 
   test('getLastCommitHash', () async {
-    expect(await GitInfo.lastCommitHash, 'ff4aa27opijo38jsdflajffdasfijoeqwifahf');
+    expect(
+      await GitInfo.lastCommitHash,
+      'ff4aa27opijo38jsdflajffdasfijoeqwifahf',
+    );
   });
 
   test('getLastCommitHashShort', () async {
