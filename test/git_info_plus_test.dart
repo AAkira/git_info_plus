@@ -56,4 +56,42 @@ void main() {
   test('getLastCommitMessage', () async {
     expect(await GitInfo.lastCommitMessage, 'Initial commit.');
   });
+
+  group('platform returns null', () {
+    setUp(() {
+      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+          .setMockMethodCallHandler(channel, (MethodCall methodCall) async {
+        return null;
+      });
+    });
+
+    test('branchName', () async {
+      expect(await GitInfo.branchName, isNull);
+    });
+
+    test('lastCommitDate', () async {
+      expect(await GitInfo.lastCommitDate, isNull);
+    });
+
+    test('lastCommitHash', () async {
+      expect(await GitInfo.lastCommitHash, isNull);
+    });
+
+    test('lastCommitHashShort', () async {
+      expect(await GitInfo.lastCommitHashShort, isNull);
+    });
+
+    test('lastCommitMessage', () async {
+      expect(await GitInfo.lastCommitMessage, isNull);
+    });
+  });
+
+  test('lastCommitDate returns null when the date cannot be parsed', () async {
+    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+        .setMockMethodCallHandler(channel, (MethodCall methodCall) async {
+      return 'undefined';
+    });
+
+    expect(await GitInfo.lastCommitDate, isNull);
+  });
 }

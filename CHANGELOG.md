@@ -16,6 +16,16 @@
   - Android minSdk 24
   - iOS 15.0
 * Run git commands from the root project directory in Android.
+* Escape quotes and backslashes in git values in Android.
+* Fall back to environment variables when git returns an empty value in Android.
+  - Quotes around `GIT_LAST_COMMIT_DATE` are optional.
+* Return null instead of the string "null" when a value is missing in Android.
+* Return null instead of crashing when the date is missing in Dart.
+* Return null instead of crashing when a key is missing in iOS.
+* Return null instead of an empty string in iOS.
+  - The branch name on detached HEAD is now null (previously "HEAD").
+* Fix the iOS Run Script to handle commit messages containing spaces, quotes, backslashes and `$`.
+  - Use `git branch --show-current` for the branch name.
 
 ## 0.0.6
 

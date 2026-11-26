@@ -274,7 +274,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "plistBuddy=\"/usr/libexec/PlistBuddy\"\ninfoPlistFile=\"${TEMP_DIR}/Preprocessed-Info.plist\"\n\nbranchName=$(git rev-parse --abbrev-ref HEAD)\ncommitDate=$(git --no-pager log -1 --format=\"%ai\")\ncommitHash=$(git rev-parse HEAD)\ncommitHashShort=$(git rev-parse --short HEAD)\ncommitMessage=$(git log -1 --pretty=%s)\n\n$plistBuddy -c \"Set :GitBranchName $branchName\" $infoPlistFile\n$plistBuddy -c \"Set :GitCommitDate $commitDate\" $infoPlistFile\n$plistBuddy -c \"Set :GitCommitHash $commitHash\" $infoPlistFile\n$plistBuddy -c \"Set :GitCommitHashShort $commitHashShort\" $infoPlistFile\n$plistBuddy -c \"Set :GitCommitMessage $commitMessage\" $infoPlistFile\n\n";
+			shellScript = "infoPlistFile=\"${TEMP_DIR}/Preprocessed-Info.plist\"\n\nbranchName=$(git branch --show-current)\ncommitDate=$(git --no-pager log -1 --format=%ai)\ncommitHash=$(git rev-parse HEAD)\ncommitHashShort=$(git rev-parse --short HEAD)\ncommitMessage=$(git log -1 --pretty=%s)\n\n# Xcode expands $VAR in Info.plist values after this script, so \"$\" has to be written as \"$$\".\n# LC_ALL=C keeps sed from rejecting invalid UTF-8 and emptying the value.\nsetPlistString() {\n  plutil -replace \"$1\" -string \"$(printf '%s' \"$2\" | LC_ALL=C sed 's/\\$/$$/g')\" \"$infoPlistFile\"\n}\n\nsetPlistString GitBranchName \"$branchName\"\nsetPlistString GitCommitDate \"$commitDate\"\nsetPlistString GitCommitHash \"$commitHash\"\nsetPlistString GitCommitHashShort \"$commitHashShort\"\nsetPlistString GitCommitMessage \"$commitMessage\"\n";
 		};
 		9740EEB61CF901F6004384FC /* Run Script */ = {
 			isa = PBXShellScriptBuildPhase;
